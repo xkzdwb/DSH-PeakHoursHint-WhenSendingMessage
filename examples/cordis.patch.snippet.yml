@@ -1,0 +1,42 @@
+# 安装方式（任选一种）：
+#
+# A. 作为「包」装进 profile —— 推荐，和官方 bundle 同一种形态。
+#    ../package.json 的 dsh.bundle.patch 指向本包的 cordis.patch.yml，
+#    Host 路由与 Client 半边都由这一份 patch 挂上，不需要再手写 name 行。
+#    <绝对路径> 换成你 clone 下来的目录（Windows 用正斜杠更稳）。
+#
+#      "dependencies": {
+#        "dsh-peak-hours-hint": "link:P:/absolute/path/to/DSH-PeakHoursHint-WhenSendingMessage"
+#      },
+#      "dsh": {
+#        "profile": {
+#          "bundles": [
+#            "@deepseek-ai/dsh-base",
+#            "@deepseek-ai/dsh-web-app",
+#            "dsh-peak-hours-hint"
+#          ]
+#        }
+#      }
+#
+# B. 只把行加进 profile 的 patch 层 —— 适合不想动 package.json 的情况。
+#    把下面这段追加到 ~/.dsh/profiles/<profile>/cordis.patch.yml 的 insert 列表里。
+#    注意：走这条路时 name 必须是本仓库的绝对路径，且 `id` 不要和别的包重复。
+#
+# 两种方式改完都要重启 DSH（Host 半边在启动时装载），然后刷新页面（Client 半边在页面加载时取）。
+- insert:
+    - id: peak-hint
+      name: "/absolute/path/to/DSH-PeakHoursHint-WhenSendingMessage/index.js"
+      config:
+        # 判定使用的时区。默认北京时间；改这里等于改「几点算高峰」。
+        timeZone: Asia/Shanghai
+        # 哪几天算工作日。0=周日 … 6=周六。
+        weekdays: [1, 2, 3, 4, 5]
+        # 高峰窗口，左闭右开。24:00 表示到当天结束。
+        windows:
+          - start: '09:00'
+            end: '12:00'
+          - start: '14:00'
+            end: '18:00'
+        # 法定节假日表，形状 {"2026": ["2026-01-01", ...]}。
+        # 留空 = 用本包自带的 cn-holidays.json。
+        holidaysPath: ''

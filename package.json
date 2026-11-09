@@ -1,0 +1,55 @@
+{
+  "name": "dsh-peak-hours-hint",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "在每个输入框的提示文字后面标出现在是高峰时段还是低谷时段：北京时间工作日两个计费窗口 + 中国法定节假日判定，只读路由 + data 属性追加，零依赖。",
+  "main": "index.js",
+  "icon": "./icon.svg",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "dsh",
+    "cordis",
+    "plugin",
+    "deepseek",
+    "pricing",
+    "peak-hours",
+    "off-peak",
+    "placeholder"
+  ],
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./cn-holidays.json": "./cn-holidays.json",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "cn-holidays.json",
+    "icon.svg",
+    "locale/*.json",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": []
+    }
+  },
+  "scripts": {
+    "test": "node test/run-tests.mjs",
+    "test:assets": "node tools/check-assets.mjs"
+  }
+}
